@@ -18,6 +18,10 @@ class MainActivity : AppCompatActivity() {
         mainBinding.incorrectBtn.setOnClickListener {
             launchFragment(IncorrectFragment())
         }
+
+        mainBinding.handlerBtn.setOnClickListener {
+            launchFragment(HandlerFragment())
+        }
     }
 
     private fun launchFragment(fragment: Fragment) {
