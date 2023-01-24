@@ -32,7 +32,7 @@ class CustomHandlerFragment : Fragment() {
         backgroundHandlerThread.start()    // Запустим фоновый поток
         // В конструктор передадим looper запущенного фонового потока и экземпляр TimerCallback
         backgroundHandler =
-            Handler(backgroundHandlerThread.looper, TimerCallback())
+            TimerHandler(backgroundHandlerThread.looper)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,12 +81,12 @@ class CustomHandlerFragment : Fragment() {
         _binding = null
     }
 
-    inner class TimerCallback : Handler.Callback {
+    inner class TimerHandler(looper: Looper) : Handler(looper) {
 
         private val CALC: Int = 0  // TODO get from outer class
             get
 
-        override fun handleMessage(msg: Message): Boolean {
+        override fun handleMessage(msg: Message) {
             when (msg.what) {
                 CALC -> {
                     Log.d(TAG, "Current thread = ${Thread.currentThread().name}")
@@ -99,10 +99,8 @@ class CustomHandlerFragment : Fragment() {
                     } else {
 //            Looper.myLooper()?.quitSafely()   // Выход из looper, timer заново не запустим, dead thread
                     }
-                    return true
                 }
             }
-            return false
         }
     }
 
