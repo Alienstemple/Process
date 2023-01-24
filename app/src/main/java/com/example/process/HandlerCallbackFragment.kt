@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.process.databinding.FragmentHandlerBinding
-import com.example.process.databinding.FragmentIncorrectBinding
+import com.example.process.databinding.FragmentHandlerCallbackBinding
 import java.util.concurrent.TimeUnit
 
-class HandlerFragment : Fragment() {
+class HandlerCallbackFragment : Fragment() {
 
-    private var _binding: FragmentHandlerBinding? = null
+    private var _binding: FragmentHandlerCallbackBinding? = null
     private val binding get() = _binding!!
 
     private val backgroundHandler: Handler
@@ -42,7 +42,7 @@ class HandlerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentHandlerBinding.inflate(inflater, container, false)
+        _binding = FragmentHandlerCallbackBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -75,6 +75,25 @@ class HandlerFragment : Fragment() {
         backgroundHandler.removeCallbacksAndMessages(null)  // очисти очередь сообщений
         uiHandler.removeCallbacksAndMessages(null)
         _binding = null
+    }
+
+    inner class TimerCallback: Handler.Callback {
+        override fun handleMessage(msg: Message): Boolean {
+            when(msg.what) {
+
+            }
+
+            if (timerValue > 0) {
+                Log.d(IncorrectFragment.TAG, "Timer updated: $timerValue")
+                timerValue--   // In UI - 9
+                uiHandler.post(updateUi)  // Отрисуем интерфейс
+                backgroundHandler.postDelayed(calculateTimer, TimeUnit.SECONDS.toMillis(1))
+            } else {
+//            Looper.myLooper()?.quitSafely()   // Выход из looper, timer заново не запустим, dead thread
+            }
+            return true
+        }
+
     }
 
     companion object {

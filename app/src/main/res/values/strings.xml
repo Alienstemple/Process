@@ -6,4 +6,6 @@
     <string name="start_timer">start timer</string>
     <string name="_0">0</string>
     <string name="none">none</string>
+    <string name="handler_runnable">handler runnable</string>
+    <string name="handler_callback">handler callback</string>
 </resources>

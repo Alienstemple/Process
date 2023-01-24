@@ -22,6 +22,10 @@ class MainActivity : AppCompatActivity() {
         mainBinding.handlerBtn.setOnClickListener {
             launchFragment(HandlerFragment())
         }
+
+        mainBinding.handlerCallbackBtn.setOnClickListener {
+            launchFragment(HandlerCallbackFragment())
+        }
     }
 
     private fun launchFragment(fragment: Fragment) {
