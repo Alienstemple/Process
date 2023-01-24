@@ -30,6 +30,10 @@ class MainActivity : AppCompatActivity() {
         mainBinding.customHandlerBtn.setOnClickListener {
             launchFragment(CustomHandlerFragment())
         }
+
+        mainBinding.executorBtn.setOnClickListener {
+            launchFragment(ExecutorFragment())
+        }
     }
 
     private fun launchFragment(fragment: Fragment) {

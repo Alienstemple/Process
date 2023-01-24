@@ -10,4 +10,5 @@
     <string name="handler_callback">handler callback</string>
     <string name="custom_handler">custom handler</string>
     <string name="incorrect">incorrect</string>
+    <string name="executor">Executor</string>
 </resources>

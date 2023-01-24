@@ -13,18 +13,24 @@
         tools:layout="@layout/fragment_incorrect"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ScrollView
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/executor_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/executor" />
 
             <Button
                 android:id="@+id/handler_btn"
@@ -53,8 +59,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/incorrect" />
-
-
         </LinearLayout>
-    </ScrollView>
+    </HorizontalScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

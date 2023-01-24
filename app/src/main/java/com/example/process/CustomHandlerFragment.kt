@@ -52,7 +52,7 @@ class CustomHandlerFragment : Fragment() {
         binding.startBtn.setOnClickListener {
             timerValue = binding.enterTime.text.toString().toInt()
             Log.d(TAG, "Before send empty message")
-            backgroundHandler.sendEmptyMessage(0)  // TODO TimerCallback.calc
+            backgroundHandler.sendEmptyMessage(0)  // TODO TimerCallback.CALC
         }
     }
 
