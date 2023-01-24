@@ -8,4 +8,6 @@
     <string name="none">none</string>
     <string name="handler_runnable">handler runnable</string>
     <string name="handler_callback">handler callback</string>
+    <string name="custom_handler">custom handler</string>
+    <string name="incorrect">incorrect</string>
 </resources>

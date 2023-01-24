@@ -2,16 +2,16 @@ package com.example.process
 
 import android.os.*
 import android.util.Log
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import com.example.process.databinding.FragmentCustomHandlerBinding
 import com.example.process.databinding.FragmentHandlerCallbackBinding
 import java.util.concurrent.TimeUnit
 
-class HandlerCallbackFragment : Fragment() {
-
-    private var _binding: FragmentHandlerCallbackBinding? = null
+class CustomHandlerFragment : Fragment() {
+    private var _binding: FragmentCustomHandlerBinding? = null
     private val binding get() = _binding!!
 
     private val backgroundHandler: Handler
@@ -32,7 +32,8 @@ class HandlerCallbackFragment : Fragment() {
         backgroundHandlerThread.start()    // Запустим фоновый поток
         // В конструктор передадим looper запущенного фонового потока и экземпляр TimerCallback
         backgroundHandler =
-            Handler(backgroundHandlerThread.looper, TimerCallback())   }
+            Handler(backgroundHandlerThread.looper, TimerCallback())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,7 +43,7 @@ class HandlerCallbackFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentHandlerCallbackBinding.inflate(inflater, container, false)
+        _binding = FragmentCustomHandlerBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -93,7 +94,8 @@ class HandlerCallbackFragment : Fragment() {
                         Log.d(IncorrectFragment.TAG, "Timer updated: $timerValue")
                         timerValue--   // In UI - 9
                         uiHandler.post(updateUi)  // Отрисуем интерфейс
-                        backgroundHandler.sendEmptyMessageDelayed(CALC, TimeUnit.SECONDS.toMillis(1))
+                        backgroundHandler.sendEmptyMessageDelayed(CALC,
+                            TimeUnit.SECONDS.toMillis(1))
                     } else {
 //            Looper.myLooper()?.quitSafely()   // Выход из looper, timer заново не запустим, dead thread
                     }

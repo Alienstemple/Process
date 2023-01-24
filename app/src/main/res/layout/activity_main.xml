@@ -16,6 +16,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -33,6 +34,13 @@
                 android:text="@string/handler_runnable" />
 
             <Button
+                android:id="@+id/custom_handler_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/custom_handler" />
+
+            <Button
                 android:id="@+id/handler_callback_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -44,7 +52,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="incorrect" />
+                android:text="@string/incorrect" />
 
 
         </LinearLayout>
