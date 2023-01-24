@@ -16,7 +16,8 @@ class HandlerCallbackFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val backgroundHandler: Handler
-    private val uiHandler = Handler(Looper.getMainLooper())  // Основной поток уже запущен. Возьмем от него looper
+    private val uiHandler =
+        Handler(Looper.getMainLooper())  // Основной поток уже запущен. Возьмем от него looper
 
     private val calculateTimer = Runnable {
         calculateTimer()
@@ -30,9 +31,9 @@ class HandlerCallbackFragment : Fragment() {
     init {
         val backgroundHandlerThread = HandlerThread("background")
         backgroundHandlerThread.start()    // Запустим фоновый поток
+        // В конструктор передадим looper запущенного фонового потока и экземпляр TimerCallback
         backgroundHandler =
-            Handler(backgroundHandlerThread.looper)   // В конструктор передадим looper запущенного фонового потока
-    }
+            Handler(backgroundHandlerThread.looper, TimerCallback())   }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,11 +51,13 @@ class HandlerCallbackFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.startBtn.setOnClickListener {
             timerValue = binding.enterTime.text.toString().toInt()
-            backgroundHandler.post(calculateTimer)
+            Log.d(TAG, "Before send empty message")
+            backgroundHandler.sendEmptyMessage(0)  // TODO TimerCallback.calc
         }
     }
 
     private fun calculateTimer() {
+        Log.d(TAG, "Current thread = ${Thread.currentThread().name}")
         if (timerValue > 0) {
             Log.d(IncorrectFragment.TAG, "Timer updated: $timerValue")
             timerValue--   // In UI - 9
@@ -66,6 +69,7 @@ class HandlerCallbackFragment : Fragment() {
     }
 
     private fun updateUi() {
+        Log.d(TAG, "Current thread = ${Thread.currentThread().name}")
         Log.d(TAG, "In UI: $timerValue")
         binding.resultTv.text = timerValue.toString()
     }
@@ -77,23 +81,28 @@ class HandlerCallbackFragment : Fragment() {
         _binding = null
     }
 
-    inner class TimerCallback: Handler.Callback {
+    inner class TimerCallback : Handler.Callback {
+
+        private val CALC: Int = 0  // TODO get from outer class
+            get
+
         override fun handleMessage(msg: Message): Boolean {
-            when(msg.what) {
-
-            }
-
-            if (timerValue > 0) {
-                Log.d(IncorrectFragment.TAG, "Timer updated: $timerValue")
-                timerValue--   // In UI - 9
-                uiHandler.post(updateUi)  // Отрисуем интерфейс
-                backgroundHandler.postDelayed(calculateTimer, TimeUnit.SECONDS.toMillis(1))
-            } else {
+            when (msg.what) {
+                CALC -> {
+                    Log.d(TAG, "Current thread = ${Thread.currentThread().name}")
+                    if (timerValue > 0) {
+                        Log.d(IncorrectFragment.TAG, "Timer updated: $timerValue")
+                        timerValue--   // In UI - 9
+                        uiHandler.post(updateUi)  // Отрисуем интерфейс
+                        backgroundHandler.sendEmptyMessageDelayed(CALC, TimeUnit.SECONDS.toMillis(1))
+                    } else {
 //            Looper.myLooper()?.quitSafely()   // Выход из looper, timer заново не запустим, dead thread
+                    }
+                    return true
+                }
             }
-            return true
+            return false
         }
-
     }
 
     companion object {
