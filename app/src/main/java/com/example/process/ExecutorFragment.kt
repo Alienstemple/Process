@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.process.databinding.FragmentCustomHandlerBinding
+import com.example.process.databinding.FragmentExecutorBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -15,7 +16,7 @@ import java.util.concurrent.ThreadPoolExecutor
 import java.util.concurrent.TimeUnit
 
 class ExecutorFragment : Fragment() {
-    private var _binding: FragmentCustomHandlerBinding? = null
+    private var _binding: FragmentExecutorBinding? = null
     private val binding get() = _binding!!
 
     private val executorService: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
@@ -36,21 +37,32 @@ class ExecutorFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        _binding = FragmentCustomHandlerBinding.inflate(inflater, container, false)
+        _binding = FragmentExecutorBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        Log.d(TAG,
+            "onViewCreated() called with: view = $view, savedInstanceState = $savedInstanceState")
+
+        timerValue = binding.enterTime.text.toString().toInt()
+
     }
 
     override fun onStart() {
         super.onStart()
         Log.d(TAG, "onStart() called")
-        executorService.scheduleAtFixedRate(calculateTimer, 0, 1, TimeUnit.SECONDS)
-    }
+        executorService.scheduleAtFixedRate({
+            if (timerValue > 0) {
+                Log.d(TAG, "Launched! ")
+                binding.resultTv.post(updateUi)
+                timerValue--
+            } else {
+                executorService.shutdownNow()
+            }
+        }, 0, 1, TimeUnit.SECONDS)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.startBtn.setOnClickListener {
-            timerValue = binding.enterTime.text.toString().toInt()
-        }
     }
 
     private fun calculateTimer() {
@@ -58,6 +70,7 @@ class ExecutorFragment : Fragment() {
         if (timerValue > 0) {
             Log.d(IncorrectFragment.TAG, "Timer updated: $timerValue")
             timerValue--   // In UI - 9
+            Log.d(TAG, "Before post ui")
             binding.resultTv.post(updateUi)  // Отрисуем интерфейс
         } else {
             executorService.shutdownNow()

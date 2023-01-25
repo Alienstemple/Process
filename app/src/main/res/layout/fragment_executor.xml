@@ -7,28 +7,21 @@
     android:background="#E26DF6"
     tools:context=".ExecutorFragment">
 
-    <EditText
+    <TextView
         android:id="@+id/enter_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="48dp"
-        android:hint="@string/enter_time"/>
-
-    <Button
-        android:id="@+id/start_btn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="96dp"
-        android:text="@string/start_timer" />
+        android:textSize="20sp"
+        android:text="10" />
 
     <TextView
         android:id="@+id/result_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="144dp"
+        android:layout_marginTop="96dp"
         android:textSize="20sp"
         android:text="@string/none" />
 

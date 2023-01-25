@@ -45,7 +45,7 @@ class HandlerCallbackFragment : Fragment() {
         binding.startBtn.setOnClickListener {
             timerValue = binding.enterTime.text.toString().toInt()
             Log.d(TAG, "Before send empty message")
-            backgroundHandler.sendEmptyMessage(0)  // TODO TimerCallback.calc
+            backgroundHandler.sendEmptyMessage(CALC)  // TODO TimerCallback.calc
         }
     }
 
@@ -63,9 +63,6 @@ class HandlerCallbackFragment : Fragment() {
     }
 
     inner class TimerCallback : Handler.Callback {
-
-        private val CALC: Int = 0  // TODO get from outer class
-            get
 
         override fun handleMessage(msg: Message): Boolean {
             when (msg.what) {
@@ -89,6 +86,7 @@ class HandlerCallbackFragment : Fragment() {
 
     companion object {
         const val TAG = "HandlerFragLog"
+        const val CALC: Int = 0
 
         @JvmStatic
         fun newInstance() =
