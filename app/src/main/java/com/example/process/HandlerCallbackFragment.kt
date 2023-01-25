@@ -18,9 +18,6 @@ class HandlerCallbackFragment : Fragment() {
     private val uiHandler =
         Handler(Looper.getMainLooper())  // Основной поток уже запущен. Возьмем от него looper
 
-    private val calculateTimer = Runnable {
-        calculateTimer()
-    }
     private val updateUi = Runnable {
         updateUi()
     }
@@ -32,10 +29,7 @@ class HandlerCallbackFragment : Fragment() {
         backgroundHandlerThread.start()    // Запустим фоновый поток
         // В конструктор передадим looper запущенного фонового потока и экземпляр TimerCallback
         backgroundHandler =
-            Handler(backgroundHandlerThread.looper, TimerCallback())   }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+            Handler(backgroundHandlerThread.looper, TimerCallback())
     }
 
     override fun onCreateView(
@@ -55,18 +49,6 @@ class HandlerCallbackFragment : Fragment() {
         }
     }
 
-    private fun calculateTimer() {
-        Log.d(TAG, "Current thread = ${Thread.currentThread().name}")
-        if (timerValue > 0) {
-            Log.d(IncorrectFragment.TAG, "Timer updated: $timerValue")
-            timerValue--   // In UI - 9
-            uiHandler.post(updateUi)  // Отрисуем интерфейс
-            backgroundHandler.postDelayed(calculateTimer, TimeUnit.SECONDS.toMillis(1))
-        } else {
-//            Looper.myLooper()?.quitSafely()   // Выход из looper, timer заново не запустим, dead thread
-        }
-    }
-
     private fun updateUi() {
         Log.d(TAG, "Current thread = ${Thread.currentThread().name}")
         Log.d(TAG, "In UI: $timerValue")
@@ -75,7 +57,7 @@ class HandlerCallbackFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        backgroundHandler.removeCallbacksAndMessages(null)  // очисти очередь сообщений
+        backgroundHandler.removeCallbacksAndMessages(null)  // очистим очередь сообщений
         uiHandler.removeCallbacksAndMessages(null)
         _binding = null
     }
@@ -93,7 +75,8 @@ class HandlerCallbackFragment : Fragment() {
                         Log.d(IncorrectFragment.TAG, "Timer updated: $timerValue")
                         timerValue--   // In UI - 9
                         uiHandler.post(updateUi)  // Отрисуем интерфейс
-                        backgroundHandler.sendEmptyMessageDelayed(CALC, TimeUnit.SECONDS.toMillis(1))
+                        backgroundHandler.sendEmptyMessageDelayed(CALC,
+                            TimeUnit.SECONDS.toMillis(1))
                     } else {
 //            Looper.myLooper()?.quitSafely()   // Выход из looper, timer заново не запустим, dead thread
                     }

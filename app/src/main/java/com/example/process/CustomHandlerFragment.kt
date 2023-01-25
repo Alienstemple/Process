@@ -14,13 +14,10 @@ class CustomHandlerFragment : Fragment() {
     private var _binding: FragmentCustomHandlerBinding? = null
     private val binding get() = _binding!!
 
-    private val backgroundHandler: Handler
+    private val backgroundHandler: TimerHandler
     private val uiHandler =
         Handler(Looper.getMainLooper())  // Основной поток уже запущен. Возьмем от него looper
 
-    private val calculateTimer = Runnable {
-        calculateTimer()
-    }
     private val updateUi = Runnable {
         updateUi()
     }
@@ -53,18 +50,6 @@ class CustomHandlerFragment : Fragment() {
             timerValue = binding.enterTime.text.toString().toInt()
             Log.d(TAG, "Before send empty message")
             backgroundHandler.sendEmptyMessage(0)  // TODO TimerCallback.CALC
-        }
-    }
-
-    private fun calculateTimer() {
-        Log.d(TAG, "Current thread = ${Thread.currentThread().name}")
-        if (timerValue > 0) {
-            Log.d(IncorrectFragment.TAG, "Timer updated: $timerValue")
-            timerValue--   // In UI - 9
-            uiHandler.post(updateUi)  // Отрисуем интерфейс
-            backgroundHandler.postDelayed(calculateTimer, TimeUnit.SECONDS.toMillis(1))
-        } else {
-//            Looper.myLooper()?.quitSafely()   // Выход из looper, timer заново не запустим, dead thread
         }
     }
 
