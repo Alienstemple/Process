@@ -21,9 +21,6 @@ class ExecutorFragment : Fragment() {
 
     private val executorService: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
 
-    private val calculateTimer = Runnable {
-        calculateTimer()
-    }
     private val updateUi = Runnable {
         updateUi()
     }
@@ -63,18 +60,6 @@ class ExecutorFragment : Fragment() {
             }
         }, 0, 1, TimeUnit.SECONDS)
 
-    }
-
-    private fun calculateTimer() {
-        Log.d(TAG, "Current thread = ${Thread.currentThread().name}")
-        if (timerValue > 0) {
-            Log.d(IncorrectFragment.TAG, "Timer updated: $timerValue")
-            timerValue--   // In UI - 9
-            Log.d(TAG, "Before post ui")
-            binding.resultTv.post(updateUi)  // Отрисуем интерфейс
-        } else {
-            executorService.shutdownNow()
-        }
     }
 
     private fun updateUi() {
